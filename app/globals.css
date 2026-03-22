@@ -1,0 +1,658 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap');
+
+:root {
+  --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Dark Theme Default */
+  --bg-color: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(20px);
+  --accent-color: #ffffff;
+  --btn-hover: #f0f0f0;
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --gradient-dir: to top;
+}
+
+[data-theme='light'] {
+  --bg-color: #f7f7f7;
+  --text-primary: #1a1a1a;
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --accent-color: #000000;
+  --btn-hover: #333333;
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  transition: background-color 0.5s ease;
+}
+
+#app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ambient-bg {
+  position: fixed;
+  inset: -100px;
+  z-index: -1;
+  filter: blur(120px);
+  opacity: 0.5;
+  transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Same premium styles ported from Vanilla JS project ... */
+/* Top Bar */
+.top-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: -0.05em;
+  color: var(--text-primary); /* Use variable for theme compatibility */
+  opacity: 1;
+  text-transform: uppercase;
+}
+
+.controls {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  opacity: 0.6;
+  transition: var(--transition);
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.icon-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--text-primary); /* Use variable for theme compatibility */
+  transition: var(--transition);
+}
+
+.icon-btn:hover svg {
+  transform: scale(1.1);
+  fill: var(--accent-color);
+}
+
+/* Screens */
+.game-viewport {
+  width: 100%;
+  max-width: 600px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  padding: 2rem;
+}
+
+.screen {
+  width: 100%;
+  animation: fadeInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Cards */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  padding: 4rem 3rem;
+  text-align: center;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 500px; /* Standardized max-width */
+}
+
+.splash-card {
+  aspect-ratio: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: none;
+}
+
+.glass-card h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 5rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  margin-bottom: 1rem;
+}
+
+.glass-card p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.glass-card .subtext {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 2.5rem;
+}
+
+/* Buttons */
+.primary-btn {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  opacity: 1 !important;
+  border: none;
+  padding: 1.2rem 2.5rem;
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.primary-btn:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 10px 30px rgba(var(--accent-rgb, 255, 255, 255), 0.2);
+}
+
+/* Memory Screen Styles */
+.color-container {
+  width: 100%;
+  aspect-ratio: 1.2;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden; /* Restored as requested */
+  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.color-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
+  pointer-events: none;
+}
+
+.overlay-content {
+  padding: 2.5rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  transition: padding 0.4s ease;
+  pointer-events: none; /* Let clicks pass through to sliders below if needed, but buttons inside should have pointer-events auto */
+  z-index: 5;
+}
+
+.overlay-content > * {
+  pointer-events: auto;
+}
+
+.prediction-overlay {
+  padding-left: 180px;
+}
+
+.round-info {
+  font-size: 1.1rem;
+  font-weight: 600;
+  opacity: 1;
+  color: white !important;
+  mix-blend-mode: normal !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.timer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.timer-value {
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.timer-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Prediction Sliders */
+.hsb-controls {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  z-index: 10;
+  mix-blend-mode: normal !important;
+}
+
+.slider-wrapper {
+  position: relative;
+  height: 100%;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  container-type: size; /* Enable container queries for the input size */
+}
+
+.slider-input {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  width: calc(100% * (var(--parent-height, 1) / 50)); /* This is tricky for dynamic heights, using fallback */
+  width: 500px; /* Large enough to cover height but handle will be constrained by range */
+  height: 100%;
+  width: 100%; /* If we keep it relative to parent width it wont work for vertical rotation */
+  /* Re-evaluating: input needs to be width = container height */
+}
+
+/* Correct way for vertical range in full height */
+.slider-input {
+  position: absolute;
+  width: 100cqh; /* Exactly the height of the parent container! */
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  z-index: 2;
+  margin: 0;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  background: #ffffff !important;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+  border: 4px solid rgba(255,255,255,1);
+  mix-blend-mode: normal !important;
+}
+
+.slider-track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hue-bg {
+  background: linear-gradient(var(--gradient-dir, to top), 
+    #ff0000 0%, #ffff00 17%, #00ff00 33%, 
+    #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+}
+
+/* Gradients for Sat and Bri are now handled in JS */
+
+.slider-tag {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  font-size: 0.9rem;
+  opacity: 1;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.action-circle {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #ffffff !important;
+  opacity: 1 !important;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transition: var(--transition);
+}
+
+.action-circle:hover {
+  transform: scale(1.1);
+}
+
+.action-circle svg {
+  width: 32px;
+  height: 32px;
+  fill: black;
+}
+
+/* Result Styles */
+.result-layout {
+  width: 100%;
+  aspect-ratio: 1.2;
+  border-radius: 1rem; /* Matched to game card */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important; /* Force edge-to-edge */
+}
+
+.result-section {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center content vertically in each half */
+  position: relative;
+  color: white;
+}
+
+.score-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.score-value {
+  font-size: 8rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.8;
+  margin-bottom: 1rem;
+}
+
+.score-comment {
+  font-size: 1.2rem;
+  font-weight: 500;
+  max-width: 200px;
+  line-height: 1.2;
+}
+
+.hsb-label-group {
+  display: flex;
+  flex-direction: column;
+  mix-blend-mode: difference;
+  color: white;
+}
+
+.hsb-label {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hsb-value {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.next-action-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #ffffff !important;
+  opacity: 1 !important;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.next-action-btn:hover {
+  transform: scale(1.1);
+}
+
+.next-action-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: black;
+}
+
+/* Summary Screen */
+.summary-card {
+  padding: 2.5rem 2rem; /* Reduced from 4rem */
+  aspect-ratio: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem; /* Slightly tighter gap */
+}
+
+.summary-card h1 {
+  font-size: 3rem; /* Reduced from 3.5rem */
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.total-score-box {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem; /* Reduced padding */
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0.5rem 0;
+}
+
+.total-score-box .label {
+  font-size: 0.75rem; /* Reduced font size */
+  font-weight: 600;
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+}
+
+.total-score-box .value {
+  font-family: 'Syne', sans-serif;
+  font-size: 4rem; /* Reduced from 4.5rem */
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--text-primary);
+}
+
+.summary-text {
+  font-size: 1rem; /* Reduced from 1.1rem */
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.7;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* Footer */
+.app-footer {
+  padding: 2rem;
+  font-size: 0.75rem;
+  opacity: 0.3;
+  width: 100%;
+  text-align: left;
+}
+
+/* Mobile Full Screen Styles */
+@media (max-width: 768px) {
+  :root {
+    --gradient-dir: to right;
+  }
+  .top-bar {
+    padding: 1rem;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .game-viewport {
+    padding: 0;
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .color-container, .glass-card, .result-layout, .splash-card {
+    border-radius: 0;
+    width: 100vw;
+    height: 100vh;
+    aspect-ratio: auto;
+  }
+  
+  .overlay-content {
+    padding: 1.5rem;
+    justify-content: flex-start; /* Move info to top */
+  }
+  
+  .prediction-overlay {
+    padding-left: 1.5rem;
+    padding-bottom: 250px; /* Space for horizontal sliders at bottom */
+  }
+  
+  .hsb-controls {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
+  }
+
+  .slider-wrapper {
+    width: 100%;
+    height: 60px;
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    gap: 0;
+  }
+
+  .slider-input {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    height: 60px;
+  }
+
+  .slider-track {
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .slider-tag {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    z-index: 5;
+    background: rgba(0,0,0,0.3);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  
+  .action-circle {
+    top: auto;
+    bottom: 200px; /* Positioned above the 3x60px sliders (180px) */
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 64px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    z-index: 20;
+  }
+  
+  .score-value {
+    font-size: 5rem;
+  }
+
+  .primary-btn {
+    width: 90%;
+  }
+}
