@@ -157,8 +157,8 @@ export default function Home() {
           <section className="screen">
             <div className="glass-card splash-card animate-in">
               <h1>color</h1>
-              <p>Humans can&apos;t reliably recall colors. This is a simple game to see how good (or bad) you are at it.</p>
-              <p className="subtext">We&apos;ll show you five colors, then you&apos;ll try and recreate them.</p>
+              <p>{"Humans can't reliably recall colors. This is a simple game to see how good (or bad) you are at it."}</p>
+              <p className="subtext">{"We'll show you five colors, then you'll try and recreate them."}</p>
               <button className="primary-btn" onClick={startNewGame}>Solo Play</button>
             </div>
           </section>
@@ -264,10 +264,11 @@ export default function Home() {
                 <span className="value">{totalScore.toFixed(2)}</span>
               </div>
               <p className="summary-text">
-                {totalScore > 400 ? "You&apos;re a human spectrometer!" : 
+                {totalScore > 480 ? "Flawless! You see in 32-bit color." : 
+                 totalScore > 400 ? "Elite Vision. A true color master." : 
                  totalScore > 300 ? "Impressive eye for detail." : 
                  totalScore > 200 ? "Solid effort, but keep practicing." : 
-                 "Are you sure you&apos;re not colorblind?"}
+                 "Are you sure you're not colorblind?"}
               </p>
               <button className="primary-btn" onClick={() => setScreen("splash")}>
                 MAIN MENU

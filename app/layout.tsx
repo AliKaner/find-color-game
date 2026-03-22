@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Dialed. - Color Memory Game",
-  description: "A minimalist, high-end color memory game built with Next.js",
+  title: "ColorGuess - Color Memory Game",
+  description: "A minimalist, high-end color memory game built with Next.js. Test your ability to recall and recreate complex hues.",
 };
 
 export default function RootLayout({
